@@ -2,8 +2,8 @@
 namespace Crghome\Shop\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController;
 use Illuminate\Support\Facades\Redirect;
-// use Crghome\Shop\Http\Controllers\Api\Datatable\ShopDatatableController;
 
 class ShopController extends Controller{
     protected $_breadcrumbs;
@@ -25,9 +25,17 @@ class ShopController extends Controller{
         $this->_breadcrumbs = array(
             array('text' => 'Главная', 'href' => '/'),
             array('text' => config('crghome-shop.name', 'Магазин')),
-            // 'index' => array('text' => 'Меню типы')
+            'index' => array('text' => 'Товары')
         );
-        // $this->_title = [];
+        $this->_title = (object)[
+            'index' => 'Товары',
+            'show' => 'Товар',
+            'create' => 'Создание товара',
+            'update' => 'Обновление товара',
+        ];
+        $this->_subtitle = (object)[
+            'index' => 'Список товаров'
+        ];
     }
 
     /**
@@ -37,8 +45,9 @@ class ShopController extends Controller{
      */
     protected function index()
     {
+        $arrData = (object)array();
         $breadcrumbs = $this->_breadcrumbs;
-        $configDataAjax = []; //ShopDatatableController::getFields();
+        $configDataAjax = ProductDatatableController::getFields();
         $title = $this->_title->index??config('desc-panel.name');
         $subtitle = $this->_subtitle->index??config('desc-panel.name');
         $pageBtnAction = [
@@ -46,9 +55,9 @@ class ShopController extends Controller{
                 'type' => 'link',
                 'class' => 'btn-primary',
                 'text' => 'Создать',
-                'href' => route('navigation.menu.create')
+                'href' => route(config('crghome-shop.prefix') . '.shop.product.create')
             ],
         ];
-        return view('admin.views._base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::_base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
     }
 }

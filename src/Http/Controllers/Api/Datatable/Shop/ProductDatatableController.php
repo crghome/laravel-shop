@@ -3,8 +3,7 @@
 namespace Crghome\Shop\Http\Controllers\Api\Datatable\Shop;
 
 use App\Http\Controllers\Api\Datatable\AbstractDatatableController;
-use App\Models\Shop\Category;
-use App\Models\Shop\Product;
+use Crghome\Shop\Models\Shop\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,7 @@ class ProductDatatableController extends AbstractDatatableController
 {
     public static function getFields(){
         return (object)[
-            'id' => 'datatable-shop-product',
+            'id' => 'datatable-crghome-shop-product',
             'getRoute' => route(config('crghome-shop.prefix') . '.resource.datatable.shop.product') . '?' . http_build_query($_GET, '', '&'),
             'columns' => [
                 ['name' => 'id', 'label' => '#'],
@@ -55,16 +54,16 @@ class ProductDatatableController extends AbstractDatatableController
 
         foreach ($product as $item) {
             $actions = array(
-                array('id' => $item->id, 'title' => 'Просмотр', 'route' => route('orm.shop.product.show', $item,), 'icon' => 'la la-eye'),
-                array('id' => $item->id, 'title' => 'Редактировать', 'route' => route('orm.shop.product.edit', $item,), 'icon' => 'la la-edit'),
-                array('id' => $item->id, 'title' => 'Удалить', 'route' => route('orm.shop.product.destroy', $item,), 'icon' => 'la la-trash', 'form' => true,
-                    'formDelete' => Blade::render('<x-form-component style="display: none" method="DELETE" action="' . route('orm.shop.product.destroy', $item,) . '"></x-form-component>'))
+                array('id' => $item->id, 'title' => 'Просмотр', 'route' => route(config('crghome-shop.prefix') . '.shop.product.show', $item,), 'icon' => 'la la-eye'),
+                array('id' => $item->id, 'title' => 'Редактировать', 'route' => route(config('crghome-shop.prefix') . '.shop.product.edit', $item,), 'icon' => 'la la-edit'),
+                array('id' => $item->id, 'title' => 'Удалить', 'route' => route(config('crghome-shop.prefix') . '.shop.product.destroy', $item,), 'icon' => 'la la-trash', 'form' => true,
+                    'formDelete' => Blade::render('<x-form-component style="display: none" method="DELETE" action="' . route(config('crghome-shop.prefix') . '.shop.product.destroy', $item,) . '"></x-form-component>'))
             );
             $dt = [
                 'id' => $item->id,
                 'category' => implode('<br>', Arr::sort(($item->categories?->pluck('name')?->toArray()??[]))),
                 'name' => $item->name . '<br>' . $item->alias,
-                // 'products' => '<a class="label label-lg font-weight-bolder label-rounded label-primary pulse pulse-success" href="' . route('orm.shop.product.index', ['f_product' => $item->id]) . '">' . $item->articles->count() . '<span class="pulse-ring"></span></a>',
+                // 'products' => '<a class="label label-lg font-weight-bolder label-rounded label-primary pulse pulse-success" href="' . route(config('crghome-shop.prefix') . '.shop.product.index', ['f_product' => $item->id]) . '">' . $item->articles->count() . '<span class="pulse-ring"></span></a>',
                 'hide' => '<span class="label label-lg font-weight-bold label-light-' . ($item->hide?'error':'success') . ' label-inline">' . ($item->hide?'скрыто':'показ') . '</span>',
                 'order' => $item->order,
                 'dates' => date('d.m.Y H:i', strtotime($item->created_at)) . '<br>' . (!empty($item->updated_at) ? date('d.m.Y H:i', strtotime($item->updated_at)) : '---'),

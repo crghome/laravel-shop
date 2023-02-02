@@ -14,7 +14,7 @@
 <p><pre>"repositories": [
     {
         "type": "vcs",
-        "url": "https://gitlab.com/crghome/laravel-shop"
+        "url": "https://github.com/crghome/laravel-shop"
     }
 ]</pre></p>
 
