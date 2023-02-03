@@ -70,7 +70,7 @@ class ShopCategoryService{
      */
     public static function saveUpdateCategory($data, ?Category $category = null){
         if($category !== null){
-            $successMessage = 'Категория успешно обновлена';
+            $successMessage = 'Категория "' . $category->name . '" успешно обновлена';
         } else {
             $successMessage = 'Категория успешно создана';
             $category = new Category();

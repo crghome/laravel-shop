@@ -45,7 +45,7 @@ class ProductFormRequest extends ExtendedFormRequest
         return [
             //'parent_id' => ['integer'],
             'name' => ['required','string','max:255'],
-            'alias' => ['unique:shop_products,alias,'.$this->id,'string','max:255'],
+            'alias' => ['unique:\Crghome\Shop\Models\Shop\Product,alias,'.$this->id,'string','max:255'],
             'price' => ['required','numeric'],
             'price_old' => ['required','numeric'],
             'dateBeginPub' => ['date'],

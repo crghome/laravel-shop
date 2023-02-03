@@ -68,45 +68,9 @@ class ShopProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $arrData = (object)array(
-            'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
-            'route' => route('orm.shop.product.store'),
-            'method' => 'POST'
-        );
-        //dd(\Auth::user()->hasRole('superadmin|admin|manager'));
-
-        $title = 'Создание продукта магазина';
-        $breadcrumbs = $this->_breadcrumbs;
-        $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Создание продукта');
-        $pageBtnAction = $this->_pageBtnAction;
-        return view('admin.views.shop.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Admin\Shop\ProductFormRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ProductFormRequest $request)
-    {
-        $data = $request->except(['id']);
-        $save = ShopProductService::saveUpdateProduct($data);
-        return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
-    }
-
-    /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @param  \Crghome\Shop\Models\Shop\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
     {
@@ -133,10 +97,45 @@ class ShopProductController extends Controller
                 'class' => 'btn-primary',
                 'icon' => 'la la-edit',
                 'text' => 'Редактировать',
-                'href' => route('orm.shop.product.edit', $product),
+                'href' => route(config('crghome-shop.prefix') . '.shop.product.edit', $product),
             ],
         ];
-        return view('admin.views.shop.product.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::product.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $arrData = (object)array(
+            'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
+            'route' => route(config('crghome-shop.prefix') . '.shop.product.store'),
+            'method' => 'POST'
+        );
+        //dd(\Auth::user()->hasRole('superadmin|admin|manager'));
+
+        $title = $this->_title->create??config('crghome-shop.name');
+        $breadcrumbs = $this->_breadcrumbs;
+        $breadcrumbs['index']['href'] = $this->_listRoute;
+        $breadcrumbs[] = array('text' => 'Создание продукта');
+        $pageBtnAction = $this->_pageBtnAction;
+        return view('crghome-shop::product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Crghome\Shop\Http\Requests\ProductFormRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ProductFormRequest $request)
+    {
+        $data = $request->except(['id']);
+        $save = ShopProductService::saveUpdateProduct($data);
+        return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
     }
 
     /**
@@ -150,23 +149,23 @@ class ShopProductController extends Controller
         $arrData = (object)array(
             'product' => $product,
             'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
-            'route' => route('orm.shop.product.update', $product),
+            'route' => route(config('crghome-shop.prefix') . '.shop.product.update', $product),
             'method' => 'PATCH'
         );
         // dd($arrData->product?->categories?->pluck('id')?->toArray());
 
-        $title = 'Редактирование продукта магазина ' . $product->name;
+        $title = ($this->_title->update??config('crghome-shop.name')) . ' "' . $product->name . '"';
         $breadcrumbs = $this->_breadcrumbs;
         $breadcrumbs['index']['href'] = $this->_listRoute;
         $breadcrumbs[] = array('text' => 'Редактирование продукта "' . $product->name . '"');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('admin.views.shop.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Admin\Shop\ProductFormRequest  $request
+     * @param  \Crghome\Shop\Http\Requests\ProductFormRequest  $request
      * @param  \Crghome\Shop\Models\Shop\Product  $product
      * @return \Illuminate\Http\Response
      */

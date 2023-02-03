@@ -32,7 +32,7 @@
                             <div>{!! $item->prevText??'---' !!}</div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a href="{{ route('orm.shop.category.edit', $item) }}" class="btn btn-light-primary font-weight-bold">Редактировать</a>
+                            <a href="{{ route(config('crghome-shop.prefix') . '.shop.category.edit', $item) }}" class="btn btn-light-primary font-weight-bold">Редактировать</a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
             <hr>
 
             @if(!empty($arrData->product->pictures??[]))
-                @include('admin.fragments.shop.slider-pictures', ['pictures' => ($arrData->product->pictures??[])])
+                @include('crghome-shop::fragments.shop.slider-pictures', ['pictures' => ($arrData->product->pictures??[])])
                 <hr>
             @endif
 
