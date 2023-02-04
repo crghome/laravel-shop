@@ -2,8 +2,7 @@
 
 namespace Crghome\Shop\Http\Requests;
 
-use App\Http\Requests\Admin\ExtendedFormRequest;
-use Crghome\DescPanel\Services\DpClientService;
+use Crghome\Shop\Http\Requests\ExtendedFormRequest;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Support\Str;

@@ -2,7 +2,7 @@
 
 namespace Crghome\Shop\Http\Requests;
 
-use App\Http\Requests\Admin\ExtendedFormRequest;
+use Crghome\Shop\Http\Requests\ExtendedFormRequest;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
 

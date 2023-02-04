@@ -1,5 +1,5 @@
 <?php
-namespace Crghome\DescPanel\Traits\Models;
+namespace Crghome\Shop\Traits\Models;
 use Illuminate\Support\Facades\Auth;
 
 trait UserStamps

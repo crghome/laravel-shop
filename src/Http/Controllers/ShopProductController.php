@@ -2,7 +2,7 @@
 
 namespace Crghome\Shop\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Controller;
 use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController;
 use Crghome\Shop\Http\Requests\ProductFormRequest;
 use Crghome\Shop\Models\Shop\Category;
@@ -31,7 +31,7 @@ class ShopProductController extends Controller
         );
         $this->_breadcrumbs = array(
             array('text' => 'Главная', 'href' => '/'),
-            array('text' => 'Магазин'),
+            array('text' => config('crghome-shop.name', 'Магазин'), 'href' => route(config('crghome-shop.prefix') . '.shop.index')),
             'index' => array('text' => 'Продукты')
         );
         $this->_title = (object)[

@@ -1,11 +1,11 @@
 <?php
 namespace Crghome\Shop\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController;
+use Crghome\Shop\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
-class ShopController extends Controller{
+class ShopController extends Controller
+{
     protected $_breadcrumbs;
     protected $_listRoute;
     protected $_backRoute;
@@ -24,17 +24,16 @@ class ShopController extends Controller{
         ];
         $this->_breadcrumbs = array(
             array('text' => 'Главная', 'href' => '/'),
-            array('text' => config('crghome-shop.name', 'Магазин')),
-            'index' => array('text' => 'Товары')
+            'index' => array('text' => config('crghome-shop.name', 'Магазин'))
         );
         $this->_title = (object)[
-            'index' => 'Товары',
-            'show' => 'Товар',
-            'create' => 'Создание товара',
-            'update' => 'Обновление товара',
+            'index' => config('crghome-shop.name', 'Магазин'),
+            'show' => config('crghome-shop.name', 'Магазин'),
+            'create' => 'Создание ' . config('crghome-shop.name', 'Магазин'),
+            'update' => 'Обновление ' . config('crghome-shop.name', 'Магазин'),
         ];
         $this->_subtitle = (object)[
-            'index' => 'Список товаров'
+            'index' => 'Список ' . config('crghome-shop.name', 'Магазин')
         ];
     }
 
@@ -47,17 +46,30 @@ class ShopController extends Controller{
     {
         $arrData = (object)array();
         $breadcrumbs = $this->_breadcrumbs;
-        $configDataAjax = ProductDatatableController::getFields();
-        $title = $this->_title->index??config('desc-panel.name');
-        $subtitle = $this->_subtitle->index??config('desc-panel.name');
+        $title = $this->_title->index??config('crghome-shop.name', 'Магазин');
+        $subtitle = $this->_subtitle->index??config('crghome-shop.name', 'Магазин');
         $pageBtnAction = [
             (object)[
-                'type' => 'link',
+                'type' => 'dropdown',
                 'class' => 'btn-primary',
-                'text' => 'Создать',
-                'href' => route(config('crghome-shop.prefix') . '.shop.product.create')
+                'icon' => 'fas fa-plus-square',
+                'text' => 'гипер',
+                'menu' => [
+                    (object)[
+                        'type' => 'link',
+                        'class' => 'btn-primary',
+                        'text' => 'Создать категорию',
+                        'href' => route(config('crghome-shop.prefix') . '.shop.category.create')
+                    ],
+                    (object)[
+                        'type' => 'link',
+                        'class' => 'btn-primary',
+                        'text' => 'Создать продукт',
+                        'href' => route(config('crghome-shop.prefix') . '.shop.product.create')
+                    ],
+                ]
             ],
         ];
-        return view('crghome-shop::_base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::index', compact('title', 'subtitle', 'pageBtnAction', 'breadcrumbs', 'arrData'));
     }
 }

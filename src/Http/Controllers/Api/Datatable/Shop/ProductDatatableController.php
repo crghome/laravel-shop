@@ -2,7 +2,7 @@
 
 namespace Crghome\Shop\Http\Controllers\Api\Datatable\Shop;
 
-use App\Http\Controllers\Api\Datatable\AbstractDatatableController;
+use Crghome\Shop\Http\Controllers\Api\Datatable\AbstractDatatableController;
 use Crghome\Shop\Models\Shop\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;

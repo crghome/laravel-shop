@@ -2,14 +2,13 @@
 
 namespace Crghome\Shop\Models\Shop;
 
-use App\Traits\Models\UserStamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class CategoryProduct extends Model
 {
-    use HasFactory, UserStamps;
+    use HasFactory;
     protected $table = 'crgshop_category_products';
 
     protected $fillable = [

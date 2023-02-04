@@ -11,19 +11,21 @@
 An application that implements the work of the store on the Laravel framework. There are a number of unspoken dependencies:
 1. Back dev
     - DataTable Ajax
+    - App\Helpers\CropImages of crghome
+    - App\Helpers\AlertFlush of crghome
 2. Visual
     - layers **Keen v.5.0**
     - fragment **admin.fragments.subheader.subheader-general**
     - component **x-alert-flush-component**
     - component **x-keen.page-card-layout**
     - component **x-keen.page-card-tabs-layout**, **x-keen.page-card-tabs-content-layout**
-    - component **x-form-component, **x-keen.forms.input-component**
+    - component **x-form-component**, **x-keen.forms.input-component**
 
 > You can redefine to suit your needs in the section **resources/view/vendor/crghome-shop/**
 
 ### Features
-- [x] work categories in admin panel
-- [*] work products in admin panel
+- [x] :+1: work categories in admin panel
+- [x] :fist: work products in admin panel
 - [ ] work on front side
 - [ ] modules
 - [ ] components
@@ -96,6 +98,13 @@ $arr[] = [
             'boxInfo' => ($counter->shop->category->upd > 0 || $counter->shop->category->upd > 0 ? '<i class="flaticon-edit text-white"></i>' : ''),
             'child' => [
                 [
+                    'name' => config('crghome-shop.name', 'Магазин'),
+                    'icon' =>'fas fa-dumpster-fire',
+                    'href' => route(config('crghome-shop.prefix') . '.shop.index'),
+                    'isCurrent' => Str::startsWith((request()->route()->getName()??''), config('crghome-shop.prefix') . '.shop.index'),
+                    'isDir' => false,
+                    'child' => [],
+                ],[
                     'name' => 'Категории',
                     'icon' =>'fas fa-dumpster-fire',
                     'href' => route(config('crghome-shop.prefix') . '.shop.category.index'),

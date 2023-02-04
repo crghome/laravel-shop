@@ -1,7 +1,3 @@
-@pushOnce('script')
-    {{-- <script src="{{asset('keen/js/admin.form.submit.js')}}"></script> --}}
-@endPushOnce
-
 @section('title', $title)
 @section('subtitle', ($subtitle??''))
 @extends('admin.layouts.master')

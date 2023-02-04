@@ -2,9 +2,9 @@
 
 namespace Crghome\Shop\Models\Shop;
 
-use App\Casts\ImageCast;
-use App\Casts\MetaCast;
-use App\Traits\Models\UserStamps;
+use Crghome\Shop\Casts\ImageCast;
+use Crghome\Shop\Casts\MetaCast;
+use Crghome\Shop\Traits\Models\UserStamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

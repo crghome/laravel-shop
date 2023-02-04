@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 class ShopServiceProvider extends ServiceProvider
 {
-    public function registerResponseBindings(){
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'crghome-shop');
-
-        // $this->app->singleton(FailedPasswordConfirmationResponseContract::class, FailedPasswordConfirmationResponse::class);
-    }
-
     /**
      * Register any application services.
      *
@@ -27,6 +21,12 @@ class ShopServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../../config/crghome-shop.php', 'crghome-shop');
 
         $this->registerResponseBindings();
+    }
+
+    public function registerResponseBindings(){
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'crghome-shop');
+
+        // $this->app->singleton(FailedPasswordConfirmationResponseContract::class, FailedPasswordConfirmationResponse::class);
     }
 
     public function boot()
@@ -57,25 +57,21 @@ class ShopServiceProvider extends ServiceProvider
                 __DIR__ . '/../../config/crghome-shop.php' => config_path('crghome-shop.php'),
             ]);
 
-            // $this->publishes([
-            //     __DIR__.'/../../stubs/ShopController.php' => app_path('Http/Controllers/Admin/Shop/ShopController.php'),
-            // ]);
+            $this->publishes([
+                __DIR__.'/../../database/migrations' => database_path('migrations'),
+            ], 'crghome-shop-migrations');
 
             // $this->commands([
             //     ShopCommand::class,
             // ]);
 
             // $this->publishes([
-            //     __DIR__.'/../stubs/CreateNewUser.php' => app_path('Actions/Fortify/CreateNewUser.php'),
-            // ], 'fortify-support');
-
-            $this->publishes([
-                __DIR__.'/../../database/migrations' => database_path('migrations'),
-            ], 'crghome-shop-migrations');
+            //     __DIR__.'/../../stubs/ShopController.php' => app_path('Http/Controllers/Admin/Shop/ShopController.php'),
+            // ]);
 
             // $this->publishes([
             //     __DIR__ . '/../resources/views' => resource_path('views/vendor/shop'),
-            // ], 'dpt-views');
+            // ], 'crghome-views');
         }
     }
 
