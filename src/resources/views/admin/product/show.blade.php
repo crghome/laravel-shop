@@ -41,7 +41,7 @@
             <hr>
 
             @if(!empty($arrData->product->pictures??[]))
-                @include('crghome-shop::fragments.shop.slider-pictures', ['pictures' => ($arrData->product->pictures??[])])
+                @include('crghome-shop::admin.fragments.shop.slider-pictures', ['pictures' => ($arrData->product->pictures??[])])
                 <hr>
             @endif
 

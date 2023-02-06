@@ -1,8 +1,8 @@
 <?php
 
-namespace Crghome\Shop\Http\Controllers;
+namespace Crghome\Shop\Http\Controllers\Admin;
 
-use Crghome\Shop\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Admin\Controller;
 use Crghome\Shop\Models\Shop\Category;
 use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\CategoryDatatableController;
 use Crghome\Shop\Http\Requests\CategoryFormRequest;
@@ -63,7 +63,7 @@ class ShopCategoryController extends Controller
                 'href' => route(config('crghome-shop.prefix') . '.shop.category.create')
             ],
         ];
-        return view('crghome-shop::_base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin._base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -100,7 +100,7 @@ class ShopCategoryController extends Controller
                 'href' => route(config('crghome-shop.prefix') . '.shop.product.index', ['f_category' => $category->id]),
             ],
         ];
-        return view('crghome-shop::category.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.category.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -122,7 +122,7 @@ class ShopCategoryController extends Controller
         $breadcrumbs['index']['href'] = $this->_listRoute;
         $breadcrumbs[] = array('text' => 'Создание категории');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::category.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.category.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -159,7 +159,7 @@ class ShopCategoryController extends Controller
         $breadcrumbs['index']['href'] = $this->_listRoute;
         $breadcrumbs[] = array('text' => 'Редактирование категории "' . $category->name . '"');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::category.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.category.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**

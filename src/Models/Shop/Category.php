@@ -51,6 +51,11 @@ class Category extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function categoriesAllChildren()
+    {
+        return $this->hasMany(Category::class)->with('categoriesAllChildren');
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'crgshop_category_products')->withTimestamps();

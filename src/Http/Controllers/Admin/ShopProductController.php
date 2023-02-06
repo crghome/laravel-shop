@@ -1,8 +1,8 @@
 <?php
 
-namespace Crghome\Shop\Http\Controllers;
+namespace Crghome\Shop\Http\Controllers\Admin;
 
-use Crghome\Shop\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Admin\Controller;
 use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController;
 use Crghome\Shop\Http\Requests\ProductFormRequest;
 use Crghome\Shop\Models\Shop\Category;
@@ -64,7 +64,7 @@ class ShopProductController extends Controller
                 'href' => route(config('crghome-shop.prefix') . '.shop.product.create')
             ],
         ];
-        return view('crghome-shop::_base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin._base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -100,7 +100,7 @@ class ShopProductController extends Controller
                 'href' => route(config('crghome-shop.prefix') . '.shop.product.edit', $product),
             ],
         ];
-        return view('crghome-shop::product.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.product.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -122,7 +122,7 @@ class ShopProductController extends Controller
         $breadcrumbs['index']['href'] = $this->_listRoute;
         $breadcrumbs[] = array('text' => 'Создание продукта');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -159,7 +159,7 @@ class ShopProductController extends Controller
         $breadcrumbs['index']['href'] = $this->_listRoute;
         $breadcrumbs[] = array('text' => 'Редактирование продукта "' . $product->name . '"');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**

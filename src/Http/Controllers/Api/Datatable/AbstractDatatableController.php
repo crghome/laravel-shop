@@ -1,7 +1,7 @@
 <?php
 namespace Crghome\Shop\Http\Controllers\Api\Datatable;
 
-use Crghome\Shop\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Admin\Controller;
 
 abstract class AbstractDatatableController extends Controller
 {

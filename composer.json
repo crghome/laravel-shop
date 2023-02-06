@@ -1,7 +1,7 @@
 {
     "name": "crghome/laravel-shop",
     "description": "SHOP - shop in site for Laravel 9+",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "type": "project",
     "license": "MIT",
     "authors": [

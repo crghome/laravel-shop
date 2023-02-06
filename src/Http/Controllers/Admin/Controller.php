@@ -1,6 +1,6 @@
 <?php
 
-namespace Crghome\Shop\Http\Controllers;
+namespace Crghome\Shop\Http\Controllers\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

@@ -25,8 +25,9 @@ An application that implements the work of the store on the Laravel framework. T
 
 ### Features
 - [x] :+1: work categories in admin panel
-- [x] :fist: work products in admin panel
-- [ ] work on front side
+- [x] :+1: work products in admin panel
+- [x] :+1: categories of tree
+- [ ] :fist: work on front side
 - [ ] modules
 - [ ] components
 
@@ -73,6 +74,12 @@ To redefine routes:
 Or to redefine route with protected class:
 <pre>Route::resource('shop', \App\Http\Controllers\Admin\Shop\ShopController::class);</pre>
 
+### View overrides
+To override views, the following structure must be observed:
+- resources/views/vendor/crghome-shop/admin/*
+- resources/views/vendor/crghome-shop/front/*
+
+<hr>
 
 ## CONFIGURATION
 ### ASide menu

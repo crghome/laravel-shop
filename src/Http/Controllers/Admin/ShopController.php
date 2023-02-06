@@ -1,7 +1,7 @@
 <?php
-namespace Crghome\Shop\Http\Controllers;
+namespace Crghome\Shop\Http\Controllers\Admin;
 
-use Crghome\Shop\Http\Controllers\Controller;
+use Crghome\Shop\Http\Controllers\Admin\Controller;
 use Illuminate\Support\Facades\Redirect;
 
 class ShopController extends Controller
@@ -70,6 +70,6 @@ class ShopController extends Controller
                 ]
             ],
         ];
-        return view('crghome-shop::index', compact('title', 'subtitle', 'pageBtnAction', 'breadcrumbs', 'arrData'));
+        return view('crghome-shop::admin.index', compact('title', 'subtitle', 'pageBtnAction', 'breadcrumbs', 'arrData'));
     }
 }

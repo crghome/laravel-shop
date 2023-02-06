@@ -37,8 +37,8 @@ class ProductDatatableController extends AbstractDatatableController
         if (request()->search['value']) {
             $product = $product
                 ->where('name', 'LIKE', "%" . request()->search['value'] . "%")
-                ->where('alias', 'LIKE', "%" . request()->search['value'] . "%")
-                ->where('order', 'LIKE', "%" . request()->search['value'] . "%");
+                ->orWhere('alias', 'LIKE', "%" . request()->search['value'] . "%")
+                ->orWhere('order', 'LIKE', "%" . request()->search['value'] . "%");
         }
         $sortColumnID = request()->order[0]['column'];
         $sortDir = request()->order[0]['dir'];

@@ -21,9 +21,9 @@ Route::domain(env('APP_ADMIN_PREFIX', config('crghome-shop.admin_prefix', 'cp'))
     });
 
     Route::prefix('shop')->name('shop.')->group(function () {
-        Route::get('/', [Crghome\Shop\Http\Controllers\ShopController::class, 'index'])->name('index');
-        Route::resource('category', Crghome\Shop\Http\Controllers\ShopCategoryController::class);
-        Route::resource('product', Crghome\Shop\Http\Controllers\ShopProductController::class);
+        Route::get('/', [Crghome\Shop\Http\Controllers\Admin\ShopController::class, 'index'])->name('index');
+        Route::resource('category', Crghome\Shop\Http\Controllers\Admin\ShopCategoryController::class);
+        Route::resource('product', Crghome\Shop\Http\Controllers\Admin\ShopProductController::class);
     });
 
 });
