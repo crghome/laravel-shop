@@ -29,34 +29,6 @@ class ShopService{
         return $ogImg;
     }
 
-    /** Get Title and Meta isset
-     * @param String $path = null, String $alias = null, $show = false
-     * @return Array
-     */
-    public static function getBasisContentPage(String $path = null, String $alias = null, $show = false){
-        $title = $meta = $article = $ogimage = '';
-        $article = self::getArticleContent($path, $alias);
-        //dd($article);
-        if($article){
-            $newDate = new \DateTime();
-            $dateArticleBegin = \DateTime::createFromFormat('Y-m-d H:i:s', $article->dateBeginPub??date('Y-m-d H:i:s'));
-            $dateArticleEnd = $article->dateEndPub??null;
-            $dateArticleEnd ? $dateArticleEnd = \DateTime::createFromFormat('Y-m-d H:i:s', $article->dateEndPub) : false;
-            if(($dateArticleBegin && $dateArticleBegin <= $newDate) && (!$dateArticleEnd || ($dateArticleEnd && $dateArticleEnd >= $newDate))){
-                $title = self::getArticleTitle($article);
-                $meta = self::getArticleMeta($article);
-                $ogimage = self::getArticleOgImage($article);
-                $show && $article ? self::setArticleContentShowIncrement($article->articleContents[0]->id??0) : false;
-            } else {
-                abort(404, 'Запрошенная страница не найдена');
-            }
-        } else {
-            abort(404, 'Запрошенная страница не найдена');
-        }
-
-        return ['article' => $article, 'title' => $title, 'meta' => $meta, 'ogimage' => $ogimage];
-    }
-
     /** Get Categories Eloquent
      * @param Int|Null $idCat
      * @return Eloquent

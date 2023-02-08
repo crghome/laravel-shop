@@ -49,35 +49,35 @@ The package is not registered, so you need to add <code>composer.json</code>:
 ```
 
 Then we perform the installation in the usual format:
-```composer require crghome/laravel-shop```
+<pre>composer require crghome/laravel-shop</pre>
 Or Instal Dev Version:
-```composer require crghome/laravel-shop:dev-main```
+<pre>composer require crghome/laravel-shop:dev-main</pre>
 
 ### Published
 Published dependencies in console:
-```php artisan vendor:publish --provider="Crghome\Shop\Providers\ShopServiceProvider" --force```
+<pre>php artisan vendor:publish --provider="Crghome\Shop\Providers\ShopServiceProvider" --force</pre>
 If no Tag error then Add to <code>config/app.php</code> in section <i>providers</i>:
-```Crghome\Shop\Providers\ShopServiceProvider::class```
+<pre>Crghome\Shop\Providers\ShopServiceProvider::class</pre>
 If error Class "Crghome\Shop\Providers\ShopServiceProvider" not found to <code>composer.json</code> in section <i>autoload-dev -> psr-4</i>:
-```"Crghome\\Shop\\": "packages/crghome/shop/src/"```
+<pre>"Crghome\\Shop\\": "packages/crghome/shop/src/"</pre>
 
 ### Migration
 Run migrate in console:
-```php artisan migrate```
+<pre>php artisan migrate</pre>
 
 For test data (seeding):
-```php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"```
+<pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"</pre>
 
 ### Routing
 Routes are set in the system:
 - resource **cp.domain/crghome/shop/category**
 - resource **cp.domain/crghome/shop/product**
 To get url route in a view (other):
-```route(config('crghome-shop.prefix') . '.shop.product.index');```
+<pre>route(config('crghome-shop.prefix') . '.shop.product.index');</pre>
 To redefine routes:
-```Route::resource('shop', Crghome\Shop\Http\Controllers\ShopController::class);```
+<pre>Route::resource('shop', Crghome\Shop\Http\Controllers\ShopController::class);</pre>
 Or to redefine route with protected class:
-```Route::resource('shop', \App\Http\Controllers\Admin\ShopController::class);```
+<pre>Route::resource('shop', \App\Http\Controllers\Admin\ShopController::class);</pre>
 
 ### View overrides
 To override views, the following structure must be observed:
@@ -99,9 +99,13 @@ Route::prefix('shop')->name('shop.')->group(function () {
 ### Components
 Is components:
 - component return Categories of Product, param :collectCategories or :idProduct
-    ```<x-package-crghome-shop-categories-of-product-component :collectCategories="$data->categories" />```
+    ```
+    <x-package-crghome-shop-categories-of-product-component :collectCategories="$data->categories" />
+    ```
 - component return Products of Category, param :collectProducts or :idCategory
-    ```<x-package-crghome-shop-category-products-component :collectProducts="$data->products" />```
+    ```
+    <x-package-crghome-shop-category-products-component :collectProducts="$data->products" />
+    ```
 
 <hr>
 
