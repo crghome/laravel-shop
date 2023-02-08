@@ -8,11 +8,14 @@
 
 ## INFO
 
+Stable version: **0.3.0** 
+Stable release: **0.3.\***
+
 An application that implements the work of the store on the Laravel framework. There are a number of unspoken dependencies:
 1. Back dev
     - DataTable Ajax
-    - App\Helpers\CropImages of crghome
-    - App\Helpers\AlertFlush of crghome
+    - App\Helpers\CropImages of [CropImages crghome][https://github.com/crghome/cropImages]
+    - App\Helpers\AlertFlush of crghome (send to session alert)
 2. Visual
     - layers **Keen v.5.0**
     - fragment **admin.fragments.subheader.subheader-general**
@@ -24,12 +27,12 @@ An application that implements the work of the store on the Laravel framework. T
 > You can redefine to suit your needs in the section **resources/view/vendor/crghome-shop/**
 
 ### Features
-- [x] :+1: work categories in admin panel
-- [x] :+1: work products in admin panel
+- [x] :ok: work categories in admin panel
+- [x] :ok: work products in admin panel
 - [x] :+1: categories of tree
-- [ ] :fist: work on front side
-- [ ] modules
-- [ ] components
+- [x] :fist: work on front side
+- [ ] :interrobang: modules
+- [ ] :exclamation: components
 
 <hr>
 
@@ -72,7 +75,7 @@ To get url route in a view (other):
 To redefine routes:
 <pre>Route::resource('shop', Crghome\Shop\Http\Controllers\ShopController::class);</pre>
 Or to redefine route with protected class:
-<pre>Route::resource('shop', \App\Http\Controllers\Admin\Shop\ShopController::class);</pre>
+<pre>Route::resource('shop', \App\Http\Controllers\Admin\ShopController::class);</pre>
 
 ### View overrides
 To override views, the following structure must be observed:
@@ -80,6 +83,16 @@ To override views, the following structure must be observed:
 - resources/views/vendor/crghome-shop/front/*
 
 <hr>
+
+## FRONT
+To work on the front side, you need to add routing to your front routing (example):
+<pre>
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'main'])->name('main');
+    Route::get('/product/{product:alias}', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'product'])->where(['product'=>'[\w\_\-]+'])->name('product');
+    Route::get('/{category:path}', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'category'])->where(['category'=>'[\w\_\-\/]+'])->name('category');
+});
+</pre>
 
 ## CONFIGURATION
 ### ASide menu

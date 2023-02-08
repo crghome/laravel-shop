@@ -58,6 +58,6 @@ class Category extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'crgshop_category_products')->withTimestamps();
+        return $this->belongsToMany(Product::class, config('crghome-shop.db.tables.category_products'))->withTimestamps();
     }
 }
