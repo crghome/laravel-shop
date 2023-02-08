@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="container">
-        @include('crghome-shop::front.fragments.categories', ['categories' => $data->categories])
+        <x-package-crghome-shop-categories-of-product-component :collectCategories="$data->categories" />
     </div>
     @if(!empty(trim($data->product->prevText)))
         <div class="container">

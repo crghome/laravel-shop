@@ -28,8 +28,8 @@ class ShopController extends Controller
         // dd($category);
         $data = (object)[
             'category' => $category,
-            'categories' => $category->categories,
-            'products' => $category->products,
+            'categories' => ShopService::getCategories($category->id),
+            'products' => ShopService::getProducts($category->id),
         ];
         // extract(ShopService::getBasisContentPage(null, null, true), EXTR_OVERWRITE);
         // $ogimage = ShopService::getOgImage($article);
@@ -42,8 +42,7 @@ class ShopController extends Controller
         // dd($product->categories());
         $data = (object)[
             'product' => $product,
-            'categories' => $product->categories,
-            // 'products' => $category->products,
+            'categories' => ShopService::getCategoriesOfProduct($product),
         ];
         // extract(ShopService::getBasisContentPage(null, null, true), EXTR_OVERWRITE);
         // $ogimage = ShopService::getOgImage($article);

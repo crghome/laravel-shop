@@ -8,8 +8,8 @@
 
 ## INFO
 
-Stable version: **0.3.0** 
-Stable release: **0.3.\***
+<p>Stable version: **0.4.0** </p>
+<p>Stable release: **0.4.\***</p>
 
 An application that implements the work of the store on the Laravel framework. There are a number of unspoken dependencies:
 1. Back dev
@@ -31,51 +31,53 @@ An application that implements the work of the store on the Laravel framework. T
 - [x] :ok: work products in admin panel
 - [x] :+1: categories of tree
 - [x] :fist: work on front side
+- [x] :ok: components
 - [ ] :interrobang: modules
-- [ ] :exclamation: components
 
 <hr>
 
 ## INSTAL
 
 The package is not registered, so you need to add <code>composer.json</code>:
-<pre>"repositories": [
+```
+"repositories": [
     {
         "type": "vcs",
         "url": "https://github.com/crghome/laravel-shop"
     }
-]</pre>
+]
+```
 
 Then we perform the installation in the usual format:
-<pre>composer require crghome/laravel-shop</pre>
+```composer require crghome/laravel-shop```
 Or Instal Dev Version:
-<pre>composer require crghome/laravel-shop:dev-main</pre>
+```composer require crghome/laravel-shop:dev-main```
 
 ### Published
 Published dependencies in console:
-<pre>php artisan vendor:publish --provider="Crghome\Shop\Providers\ShopServiceProvider" --force</pre>
+```php artisan vendor:publish --provider="Crghome\Shop\Providers\ShopServiceProvider" --force```
 If no Tag error then Add to <code>config/app.php</code> in section <i>providers</i>:
-<pre>Crghome\Shop\Providers\ShopServiceProvider::class</pre>
+```Crghome\Shop\Providers\ShopServiceProvider::class```
 If error Class "Crghome\Shop\Providers\ShopServiceProvider" not found to <code>composer.json</code> in section <i>autoload-dev -> psr-4</i>:
-<pre>"Crghome\\Shop\\": "packages/crghome/shop/src/"</pre>
+```"Crghome\\Shop\\": "packages/crghome/shop/src/"```
 
 ### Migration
 Run migrate in console:
-<pre>php artisan migrate</pre>
+```php artisan migrate```
 
 For test data (seeding):
-<pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"</pre>
+```php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"```
 
 ### Routing
 Routes are set in the system:
 - resource **cp.domain/crghome/shop/category**
 - resource **cp.domain/crghome/shop/product**
 To get url route in a view (other):
-<pre>route(config('crghome-shop.prefix') . '.shop.product.index');</pre>
+```route(config('crghome-shop.prefix') . '.shop.product.index');```
 To redefine routes:
-<pre>Route::resource('shop', Crghome\Shop\Http\Controllers\ShopController::class);</pre>
+```Route::resource('shop', Crghome\Shop\Http\Controllers\ShopController::class);```
 Or to redefine route with protected class:
-<pre>Route::resource('shop', \App\Http\Controllers\Admin\ShopController::class);</pre>
+```Route::resource('shop', \App\Http\Controllers\Admin\ShopController::class);```
 
 ### View overrides
 To override views, the following structure must be observed:
@@ -85,14 +87,23 @@ To override views, the following structure must be observed:
 <hr>
 
 ## FRONT
+### Rout
 To work on the front side, you need to add routing to your front routing (example):
-<pre>
+```
 Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'main'])->name('main');
     Route::get('/product/{product:alias}', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'product'])->where(['product'=>'[\w\_\-]+'])->name('product');
     Route::get('/{category:path}', [\Crghome\Shop\Http\Controllers\Front\ShopController::class, 'category'])->where(['category'=>'[\w\_\-\/]+'])->name('category');
 });
-</pre>
+```
+### Components
+Is components:
+- component return Categories of Product, param :collectCategories or :idProduct
+    ```<x-package-crghome-shop-categories-of-product-component :collectCategories="$data->categories" />```
+- component return Products of Category, param :collectProducts or :idCategory
+    ```<x-package-crghome-shop-category-products-component :collectProducts="$data->products" />```
+
+<hr>
 
 ## CONFIGURATION
 ### ASide menu

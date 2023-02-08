@@ -7,6 +7,9 @@ use Crghome\Shop\Console\Commands\ShopCommand;
 use Crghome\Shop\Models\Shop\Category;
 use Crghome\Shop\Models\Shop\CategoryProduct;
 use Crghome\Shop\Models\Shop\Product;
+use Crghome\Shop\View\Components\Shop\CategoriesOfProductComponent;
+use Crghome\Shop\View\Components\Shop\CategoryProductsComponent;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 
 class ShopServiceProvider extends ServiceProvider
@@ -38,6 +41,10 @@ class ShopServiceProvider extends ServiceProvider
         Category::observe(\Crghome\Shop\Observers\Shop\CategoryObserver::class);
         Product::observe(\Crghome\Shop\Observers\Shop\ProductObserver::class);
         CategoryProduct::observe(\Crghome\Shop\Observers\Shop\CategoryProductObserver::class);
+
+        // components
+        Blade::component('package-crghome-shop-category-products-component', CategoryProductsComponent::class);
+        Blade::component('package-crghome-shop-categories-of-product-component', CategoriesOfProductComponent::class);
     }
 
     /**

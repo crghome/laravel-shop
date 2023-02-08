@@ -75,6 +75,28 @@ class ShopService{
         return $category;
     }
 
+    /** Get Categories Eloquent of Product
+     * @param ?Product $product
+     * @param Int|null $idProd
+     * @return Eloquent
+     */
+    public static function getCategoriesOfProduct(?Product $product = null, Int|null $idProd = null){
+        $category = [];
+        $newDate = new \DateTime();
+        if(!empty($idProd)) $product = Product::find($idProd);
+        if(!empty($product)){
+            $category = $product->categories()->where('hide', false);
+            $category = $category->where(function($query) use ($newDate){
+                    $query->whereNull('dateBeginPub')->orWhere('dateBeginPub', '<=', $newDate);
+                })
+                ->where(function($query) use ($newDate){
+                    $query->whereNull('dateEndPub')->orWhere('dateEndPub', '>=', $newDate);
+                })
+                ->get();
+        }
+        return $category;
+    }
+
     /** Get Products Eloquent
      * @param Int|Null $idCat
      * @return Eloquent
