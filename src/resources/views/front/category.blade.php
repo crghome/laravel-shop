@@ -23,6 +23,10 @@
         @include('crghome-shop::front.fragments.products', ['products' => $data->products])
         <x-package-crghome-shop-category-products-component :collectProducts="$data->products" />
     </div>
+    <div class="container">
+        <div class="h2">Все продукты категории</div>
+        <x-package-crghome-shop-category-products-component :idCategory="$data->category?->id??0" :recursive="true" />
+    </div>
     @if(!empty(trim($data->category->prevText)))
         <div class="container">
             <div class="row">
@@ -47,9 +51,5 @@
             </div>
         </div>
     @endif
-    <div class="container">
-        <div class="h2">Все продукты</div>
-        this no
-    </div>
 </div>
 @endsection

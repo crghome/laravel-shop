@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    private $table = 'crgshop_products';
+    private $table = 'crgshop_settings';
     
     /**
      * Run the migrations.
@@ -15,30 +15,21 @@ return new class extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable(config('crghome-shop.db.tables.products', $this->table))){
-            Schema::create(config('crghome-shop.db.tables.products', $this->table), function (Blueprint $table) {
+        if(!Schema::hasTable(config('crghome-shop.db.tables.settings', $this->table))){
+            Schema::create(config('crghome-shop.db.tables.settings', $this->table), function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->string('name', 255);
-                $table->string('title', 255)->nullable();
-                $table->string('alias', 255)->unique();
                 $table->text('prevText')->nullable();
                 $table->longText('fullText')->nullable();
                 $table->json('images')->nullable();
                 $table->json('pictures')->nullable();
-                $table->json('meta')->nullable();
-                $table->double('price', 9, 4)->default(0);
-                $table->double('price_old', 9, 4)->default(0);
-                $table->integer('count')->default(0);
                 $table->string('suffixPrice')->nullable();
-                $table->dateTime('dateBeginPub')->nullable();
-                $table->dateTime('dateEndPub')->nullable();
+                $table->json('meta')->nullable();
                 // config
-                $table->boolean('hide')->default(false);
-                $table->integer('order')->default(999);
+                $table->boolean('noAuthOfBuy')->default(true);
+                $table->boolean('countNullProductOfBuy')->default(true);
                 $table->boolean('showPrevText')->default(false);
                 $table->boolean('showSuffixPrice')->default(false);
                 // statistics
-                $table->integer('views')->default(0);
                 $table->foreignId('created_user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');
                 $table->foreignId('updated_user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');
                 $table->timestamps();
@@ -53,6 +44,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('crghome-shop.db.tables.products', $this->table));
+        Schema::dropIfExists(config('crghome-shop.db.tables.settings', $this->table));
     }
 };

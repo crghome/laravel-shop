@@ -17,6 +17,11 @@ return [
             'categories' => 'crgshop_categories',
             'products' => 'crgshop_products',
             'category_products' => 'crgshop_category_products',
+            'settings' => 'crgshop_settings',
+            'clients' => 'crgshop_clients',
+            'carts' => 'crgshop_carts',
+            'statuses' => 'crgshop_order_statuses',
+            'orders' => 'crgshop_orders',
         ]
     ],
 ];

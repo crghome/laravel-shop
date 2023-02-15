@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory, UserStamps;
-    protected $table = 'crgshop_categories';
+    // protected $table = 'crgshop_categories';
 
     protected $fillable = [
         'category_id',
@@ -28,6 +28,9 @@ class Category extends Model
         'hide',
         'order',
         'showPrevText',
+        // 'created_user_id',
+        'updated_user_id',
+        // 'views',
     ];
 
     protected $casts = [
@@ -37,8 +40,9 @@ class Category extends Model
 
     public function __construct(array $attributes = [])
     {
+        parent::__construct();
+        // $this->parent;
         $this->table = config('crghome-shop.db.tables.categories');
-        $this->parent;
     }
 
     public function category()

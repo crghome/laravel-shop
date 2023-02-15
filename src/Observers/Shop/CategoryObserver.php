@@ -31,6 +31,7 @@ class CategoryObserver
     public function updating(Category $category)
     {
         $category['path'] = !empty($category['category_id']) ? ShopCategoryService::makePath($category['category_id']) . '/' . $category['alias'] : $category['alias'];
+        // $category['updated_user_id'] = auth()->user()->id;
     }
     public function updated(Category $category)
     {

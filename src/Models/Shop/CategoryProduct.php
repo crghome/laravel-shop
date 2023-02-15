@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class CategoryProduct extends Model
 {
     use HasFactory;
-    protected $table = 'crgshop_category_products';
+    // protected $table = 'crgshop_category_products';
 
     protected $fillable = [
         'category_id',
@@ -18,8 +18,9 @@ class CategoryProduct extends Model
 
     public function __construct(array $attributes = [])
     {
+        parent::__construct();
+        // $this->parent;
         $this->table = config('crghome-shop.db.tables.category_products');
-        $this->parent;
     }
 
     public function category()

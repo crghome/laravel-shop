@@ -3,17 +3,13 @@
 namespace Crghome\Shop\Http\Controllers\Admin;
 
 use Crghome\Shop\Http\Controllers\Admin\Controller;
-use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController;
-use Crghome\Shop\Http\Requests\ProductFormRequest;
-use Crghome\Shop\Models\Shop\Category;
-use Crghome\Shop\Models\Shop\Product;
-use Crghome\Shop\Models\Shop\Settings;
-use Crghome\Shop\Services\ShopProductService;
-use Crghome\Shop\Services\ShopSettingsService;
-use Illuminate\Http\Request;
+use Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ClientDatatableController;
+use Crghome\Shop\Http\Requests\ClientFormRequest;
+use Crghome\Shop\Models\Shop\Client;
+use Crghome\Shop\Services\ShopClientService;
 use Illuminate\Support\Facades\Redirect;
 
-class ShopProductController extends Controller
+class ShopClientController extends Controller
 {
     protected $_breadcrumbs;
     protected $_listRoute;
@@ -25,7 +21,7 @@ class ShopProductController extends Controller
 
     public function __construct()
     {
-        $this->_listRoute = route(config('crghome-shop.prefix') . '.shop.product.index');
+        $this->_listRoute = route(config('crghome-shop.prefix') . '.shop.client.index');
         $this->_backRoute = $this->_listRoute;
         $this->_pageBtnAction = array(
             (object)['type' => 'link', 'class' => 'btn-light-primary', 'icon' => 'ki ki-long-arrow-back icon-sm', 'text' => 'Назад', 'href' => $this->_listRoute],
@@ -34,16 +30,16 @@ class ShopProductController extends Controller
         $this->_breadcrumbs = array(
             array('text' => 'Главная', 'href' => '/'),
             array('text' => config('crghome-shop.name', 'Магазин'), 'href' => route(config('crghome-shop.prefix') . '.shop.index')),
-            'index' => array('text' => 'Продукты')
+            'index' => array('text' => 'Клиенты')
         );
         $this->_title = (object)[
-            'index' => 'Товары',
-            'show' => 'Товар',
-            'create' => 'Создание товара',
-            'update' => 'Обновление товара',
+            'index' => 'Клиенты',
+            'show' => 'Клиент',
+            'create' => 'Создание клиента',
+            'update' => 'Обновление клиента',
         ];
         $this->_subtitle = (object)[
-            'index' => 'Список товаров'
+            'index' => 'Список клиентов'
         ];
     }
 
@@ -55,7 +51,7 @@ class ShopProductController extends Controller
     public function index()
     {
         $breadcrumbs = $this->_breadcrumbs;
-        $configDataAjax = ProductDatatableController::getFields();
+        $configDataAjax = ClientDatatableController::getFields();
         $title = $this->_title->index??config('crghome-shop.name');
         $subtitle = $this->_subtitle->index??config('crghome-shop.name');
         $pageBtnAction = [
@@ -63,7 +59,7 @@ class ShopProductController extends Controller
                 'type' => 'link',
                 'class' => 'btn-primary',
                 'text' => 'Создать',
-                'href' => route(config('crghome-shop.prefix') . '.shop.product.create')
+                'href' => route(config('crghome-shop.prefix') . '.shop.client.create')
             ],
         ];
         return view('crghome-shop::admin._base.index', compact('title', 'subtitle', 'configDataAjax', 'pageBtnAction', 'breadcrumbs'));
@@ -72,20 +68,20 @@ class ShopProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Crghome\Shop\Models\Shop\Product  $product
+     * @param  \Crghome\Shop\Models\Shop\Client  $client
      */
-    public function show(Product $product)
+    public function show(Client $client)
     {
         $arrData = (object)array(
-            'product' => $product,
-            'categories' => ($product->categories??[]),
+            'client' => $client,
+            'categories' => ($client->categories??[]),
         );
         // dd($arrData);
 
-        $title = $product->label;
+        $title = $client->label;
         $breadcrumbs = $this->_breadcrumbs;
         $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Просмотр продукта магазина "' . $product->name . '"');
+        $breadcrumbs[] = array('text' => 'Просмотр продукта магазина "' . $client->name . '"');
         $pageBtnAction = [
             (object)[
                 'type' => 'link',
@@ -99,10 +95,10 @@ class ShopProductController extends Controller
                 'class' => 'btn-primary',
                 'icon' => 'la la-edit',
                 'text' => 'Редактировать',
-                'href' => route(config('crghome-shop.prefix') . '.shop.product.edit', $product),
+                'href' => route(config('crghome-shop.prefix') . '.shop.client.edit', $client),
             ],
         ];
-        return view('crghome-shop::admin.product.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.client.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
@@ -113,9 +109,9 @@ class ShopProductController extends Controller
     public function create()
     {
         $arrData = (object)array(
-            'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
-            'config' => ShopSettingsService::getConfiguration(),
-            'route' => route(config('crghome-shop.prefix') . '.shop.product.store'),
+            // 'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
+            // 'config' => ShopSettingsService::getConfiguration(),
+            'route' => route(config('crghome-shop.prefix') . '.shop.client.store'),
             'method' => 'POST'
         );
         //dd(\Auth::user()->hasRole('superadmin|admin|manager'));
@@ -123,73 +119,71 @@ class ShopProductController extends Controller
         $title = $this->_title->create??config('crghome-shop.name');
         $breadcrumbs = $this->_breadcrumbs;
         $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Создание продукта');
+        $breadcrumbs[] = array('text' => 'Создание клиента');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::admin.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.client.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Crghome\Shop\Http\Requests\ProductFormRequest  $request
+     * @param  \Crghome\Shop\Http\Requests\ClientFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductFormRequest $request)
+    public function store(ClientFormRequest $request)
     {
         $data = $request->except(['id']);
-        $save = ShopProductService::saveUpdateProduct($data);
+        $save = ShopClientService::saveUpdateClient($data);
         return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Crghome\Shop\Models\Shop\Product  $product
+     * @param  \Crghome\Shop\Models\Shop\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Client $client)
     {
         $arrData = (object)array(
-            'product' => $product,
-            'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
-            'config' => ShopSettingsService::getConfiguration(),
-            'route' => route(config('crghome-shop.prefix') . '.shop.product.update', $product),
+            'client' => $client,
+            // 'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
+            // 'config' => ShopSettingsService::getConfiguration(),
+            'route' => route(config('crghome-shop.prefix') . '.shop.client.update', $client),
             'method' => 'PATCH'
         );
-        // dd(isset($arrData->product->suffixPrice) || is_null($arrData->product->suffixPrice));
-        // dd($arrData->product?->toArray());
 
-        $title = ($this->_title->update??config('crghome-shop.name')) . ' "' . $product->name . '"';
+        $title = ($this->_title->update??config('crghome-shop.name')) . ' "' . $client->name . '"';
         $breadcrumbs = $this->_breadcrumbs;
         $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Редактирование продукта "' . $product->name . '"');
+        $breadcrumbs[] = array('text' => 'Редактирование клиента "' . $client->name . '"');
         $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::admin.product.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+        return view('crghome-shop::admin.client.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Crghome\Shop\Http\Requests\ProductFormRequest  $request
-     * @param  \Crghome\Shop\Models\Shop\Product  $product
+     * @param  \Crghome\Shop\Http\Requests\ClientFormRequest  $request
+     * @param  \Crghome\Shop\Models\Shop\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductFormRequest $request, Product $product)
+    public function update(ClientFormRequest $request, Client $client)
     {
         $data = $request->except(['id']);
-        $save = ShopProductService::saveUpdateProduct($data, $product);
+        $save = ShopClientService::saveUpdateClient($data, $client);
         return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Crghome\Shop\Models\Shop\Product  $product
+     * @param  \Crghome\Shop\Models\Shop\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Client $client)
     {
-        $res = ShopProductService::deleteProduct($product);
+        $res = ShopClientService::deleteClient($client);
         return Redirect::to($this->_backRoute);
     }
 }

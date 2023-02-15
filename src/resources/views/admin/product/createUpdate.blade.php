@@ -14,7 +14,14 @@
                     <x-keen.forms.input-component layout="default.horizontal" label="Алиас" placeholder="Может сгенерироваться с названия админу" attribute="alias" :required="false" type="text" value="{{ old('alias')??$arrData->product?->alias??'' }}"/>
                     <x-keen.forms.input-component layout="default.horizontal" class="numberInput" label="Цена" attribute="price" :required="false" type="text" value="{{ old('price')??$arrData->product?->price??'' }}"/>
                     <x-keen.forms.input-component layout="default.horizontal" class="numberInput" label="Старая цена" attribute="price_old" :required="false" type="text" value="{{ old('price_old')??$arrData->product?->price_old??'' }}"/>
-                    <x-keen.forms.input-component layout="default.horizontal" label="Суфикс цены" attribute="suffixPrice" :required="false" type="text" value="{{ old('suffixPrice')??$arrData->product?->suffixPrice??'' }}"/>
+                    <x-keen.forms.input-component layout="default.horizontal" class="numberInput" label="Количество" attribute="count" :required="false" type="text" value="{{ old('count')??$arrData->product?->count??'' }}"/>
+                    @php 
+                        $setSufixPrice = !empty($arrData->product??[]) && ($arrData->product?->count()??[]) 
+                            ? ($arrData->product->suffixPrice??'') 
+                            : ($arrData->config?->suffixPrice??'');
+                    @endphp
+                    {{-- <x-keen.forms.input-component layout="default.horizontal" label="Суфикс цены" attribute="suffixPrice" :required="false" type="text" value="{{ old('suffixPrice')??$arrData->product?->suffixPrice??$arrData->config?->suffixPrice??'' }}"/> --}}
+                    <x-keen.forms.input-component layout="default.horizontal" label="Суфикс цены" attribute="suffixPrice" :required="false" type="text" value="{{ old('suffixPrice')??$setSufixPrice }}"/>
                     @php 
                         $setProdCat = !empty($arrData->product) ? $arrData->product?->categories?->pluck('id')?->toArray() : []; 
                     @endphp
@@ -69,8 +76,8 @@
                 </x-keen.page-card-tabs-content-layout>
                 <x-keen.page-card-tabs-content-layout tabId="tabIndex_system" :active="false">
                     <x-keen.forms.input-component layout="default.horizontal" label="Скрыть продукт" class="switch-danger" attribute="hide" type="switch" :value="[(old('hide')??$arrData->product?->hide??0)]" :listsel="[1 => '']" />
-                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суфикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->product?->showSuffixPrice??0)]" :listsel="[1 => '']" />
-                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать предварительный текст в продукте" class="switch-success" attribute="showPrevText" type="switch" :value="[(old('showPrevText')??$arrData->product?->showPrevText??0)]" :listsel="[1 => '']" />
+                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суфикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->product?->showSuffixPrice??$arrData->config?->showSuffixPrice??0)]" :listsel="[1 => '']" />
+                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать предварительный текст в продукте" class="switch-success" attribute="showPrevText" type="switch" :value="[(old('showPrevText')??$arrData->product?->showPrevText??$arrData->config?->showPrevText??0)]" :listsel="[1 => '']" />
                 </x-keen.page-card-tabs-content-layout>
             </x-keen.page-card-layout >
         </x-form-component>

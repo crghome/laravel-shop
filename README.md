@@ -65,8 +65,13 @@ If error Class "Crghome\Shop\Providers\ShopServiceProvider" not found to <code>c
 Run migrate in console:
 <pre>php artisan migrate</pre>
 
-For test data (seeding):
+<p>For test data (seeding):</p>
+<p>- categories and products</p>
 <pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"</pre>
+<p>- statuses</p>
+<pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\StatusSeeder"</pre>
+<p>- orders (before statuses data)</p>
+<pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\OrdersSeeder"</pre>
 
 ### Routing
 Routes are set in the system:
@@ -102,7 +107,7 @@ Is components:
     ```
     <x-package-crghome-shop-categories-of-product-component :collectCategories="$data->categories" />
     ```
-- component return Products of Category, param :collectProducts or :idCategory
+- component return Products of Category, param :collectProducts or :idCategory and :recursive for all
     ```
     <x-package-crghome-shop-category-products-component :collectProducts="$data->products" />
     ```
@@ -118,6 +123,8 @@ use Crghome\Shop\Services\ShopProductService;
 'shop' => (object)[
     'category' => (object)['new' => ShopCategoryService::getNewCategories(), 'upd' => ShopCategoryService::getUpdateCategories()],
     'product' => (object)['new' => ShopProductService::getNewProducts(), 'upd' => ShopProductService::getUpdateProducts()],
+    'settings' => (object)['new' => ShopSettingsService::getNewSettings(), 'upd' => ShopSettingsService::getUpdateSettings()],
+    'clients' => (object)['new' => ShopClientService::getNewClients(), 'upd' => ShopClientService::getUpdateClients()],
 ],
 
 // section menu example
@@ -156,6 +163,24 @@ $arr[] = [
                     'isDir' => false,
                     'boxSuccess' => $counter->shop->product->new > 0 ? '+' . $counter->shop->product->new : '',
                     'boxInfo' => $counter->shop->product->upd > 0 ? '`' . $counter->shop->product->upd : '',
+                    'child' => [],
+                ],[
+                    'name' => 'Клиенты',
+                    'icon' => 'fas fa-user-friends',
+                    'href' => route(config('crghome-shop.prefix') . '.shop.client.index'),
+                    'isCurrent' => Str::startsWith((request()->route()->getName()??''), config('crghome-shop.prefix') . '.shop.client'),
+                    'isDir' => false,
+                    'boxSuccess' => $counter->shop->clients->new > 0 ? '+' . $counter->shop->clients->new : '',
+                    'boxInfo' => $counter->shop->clients->upd > 0 ? '`' . $counter->shop->clients->upd : '',
+                    'child' => [],
+                ],[
+                    'name' => 'Настройки',
+                    'icon' => 'far fa-list-alt',
+                    'href' => route(config('crghome-shop.prefix') . '.shop.settings.index'),
+                    'isCurrent' => Str::startsWith((request()->route()->getName()??''), config('crghome-shop.prefix') . '.shop.settings'),
+                    'isDir' => false,
+                    'boxSuccess' => $counter->shop->settings->new > 0 ? '+' . $counter->shop->settings->new : '',
+                    'boxInfo' => $counter->shop->settings->upd > 0 ? '`' . $counter->shop->settings->upd : '',
                     'child' => [],
                 ]
             ],

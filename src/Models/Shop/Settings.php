@@ -8,42 +8,32 @@ use Crghome\Shop\Traits\Models\UserStamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Settings extends Model
 {
     use HasFactory, UserStamps;
-    // protected $table = 'crgshop_products';
+    protected $table = 'crgshop_settings';
 
     protected $fillable = [
-        'name',
-        'title',
-        'alias',
         'prevText',
         'fullText',
         'images',
         'pictures',
-        'price',
-        'price_old',
-        'count',
         'suffixPrice',
         'meta',
-        'dateBeginPub',
-        'dateEndPub',
-        'hide',
-        'order',
+        // 'noAuthOfBuy',
+        'countNullProductOfBuy',
         'showPrevText',
         'showSuffixPrice',
         // 'created_user_id',
         'updated_user_id',
-        // 'views',
     ];
 
     protected $casts = [
         'meta' => MetaCast::class,
         'images' => ImageCast::class,
         'pictures' => 'object',
-        'price' => 'float',
-        'price_old' => 'float',
-        'count' => 'integer',
+        'noAuthOfBuy' => 'boolean',
+        'countNullProductOfBuy' => 'boolean',
         'showPrevText' => 'boolean',
         'showSuffixPrice' => 'boolean',
     ];
@@ -52,11 +42,11 @@ class Product extends Model
     {
         parent::__construct();
         // $this->parent;
-        $this->table = config('crghome-shop.db.tables.products');
+        $this->table = config('crghome-shop.db.tables.settings');
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, config('crghome-shop.db.tables.category_products'))->withTimestamps();
-    }
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(Category::class, config('crghome-shop.db.tables.category_products'))->withTimestamps();
+    // }
 }

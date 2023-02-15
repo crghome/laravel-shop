@@ -16,6 +16,8 @@ Route::domain(env('APP_ADMIN_PREFIX', config('crghome-shop.admin_prefix', 'cp'))
             Route::prefix('shop')->name('shop.')->group(function () {
                 Route::get('category', [Crghome\Shop\Http\Controllers\Api\Datatable\Shop\CategoryDatatableController::class, 'getData'])->name('category');
                 Route::get('product', [Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ProductDatatableController::class, 'getData'])->name('product');
+                Route::get('clients', [Crghome\Shop\Http\Controllers\Api\Datatable\Shop\ClientDatatableController::class, 'getData'])->name('clients');
+                Route::get('orders', [Crghome\Shop\Http\Controllers\Api\Datatable\Shop\OrderDatatableController::class, 'getData'])->name('orders');
             });
         });
     });
@@ -24,6 +26,9 @@ Route::domain(env('APP_ADMIN_PREFIX', config('crghome-shop.admin_prefix', 'cp'))
         Route::get('/', [Crghome\Shop\Http\Controllers\Admin\ShopController::class, 'index'])->name('index');
         Route::resource('category', Crghome\Shop\Http\Controllers\Admin\ShopCategoryController::class);
         Route::resource('product', Crghome\Shop\Http\Controllers\Admin\ShopProductController::class);
+        Route::resource('settings', Crghome\Shop\Http\Controllers\Admin\ShopSettingsController::class)->parameters(['settings' => 'settings'])->except(['show', 'destroy', 'create', 'store', 'edit']);
+        Route::resource('client', Crghome\Shop\Http\Controllers\Admin\ShopClientController::class)->except(['show', 'destroy']);
+        Route::resource('order', Crghome\Shop\Http\Controllers\Admin\ShopOrderController::class)->except(['show', 'destroy']);
     });
 
 });

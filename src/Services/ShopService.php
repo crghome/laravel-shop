@@ -71,9 +71,10 @@ class ShopService{
 
     /** Get Products Eloquent
      * @param Int|Null $idCat
+     * @param Bool $recursive
      * @return Eloquent
      */
-    public static function getProducts(Int|Null $idCat = null){
+    public static function getProducts(Int|Null $idCat = null, Bool $recursive = false){
         $newDate = new \DateTime();
         $products = Product::where('hide', false);
         $products = $idCat === null 
@@ -86,6 +87,12 @@ class ShopService{
                 $query->whereNull('dateEndPub')->orWhere('dateEndPub', '>=', $newDate);
             })
             ->get();
+        if($recursive){
+            $categories = self::getCategories($idCat);
+            foreach(($categories??[]) AS $item){
+                $products = $products->merge(self::getProducts($item->id, true));
+            }
+        }
         return $products;
     }
 
