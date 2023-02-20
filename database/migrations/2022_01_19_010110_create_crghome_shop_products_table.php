@@ -18,6 +18,7 @@ return new class extends Migration
         if(!Schema::hasTable(config('crghome-shop.db.tables.products', $this->table))){
             Schema::create(config('crghome-shop.db.tables.products', $this->table), function (Blueprint $table) {
                 $table->bigIncrements('id');
+                $table->json('analog_ids')->nullable();
                 $table->string('name', 255);
                 $table->string('title', 255)->nullable();
                 $table->string('alias', 255)->unique();

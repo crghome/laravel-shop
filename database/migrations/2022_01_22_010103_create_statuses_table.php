@@ -22,6 +22,7 @@ return new class extends Migration
                 $table->string('code', 10)->unique();
                 $table->string('name', 150);
                 $table->json('images')->nullable();
+                $table->string('css_class')->nullable();
                 $table->string('icon_class')->nullable();
                 $table->text('icon_base')->nullable();
                 $table->integer('order')->default(999);

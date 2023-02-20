@@ -4,6 +4,7 @@ namespace Crghome\Shop\Http\Controllers\Api\Datatable\Shop;
 
 use Crghome\Shop\Http\Controllers\Api\Datatable\AbstractDatatableController;
 use Crghome\Shop\Models\Shop\Category;
+use Crghome\Shop\Services\ShopCategoryService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Arr;
 
@@ -25,21 +26,6 @@ class CategoryDatatableController extends AbstractDatatableController
         ];
     }
 
-    public function eloquentCategoryToArrayList($category, $level = 0){
-        $response = [];
-        foreach (($category??[]) as $k => $item) {
-            if(!in_array($item->id, Arr::pluck($response, 'id'))){
-                $item->level = $level;
-                $item->last = ($k + 1 == count($category));
-                $response[] = $item;
-                !empty($item->categoriesAllChildren) 
-                    ? $response = array_merge($response, $this->eloquentCategoryToArrayList($item->categoriesAllChildren, ($level + 1))) 
-                    : false;
-            }
-        }
-        return $response;
-    }
-
     public function getArrData(){
         $result = ['data' => [], "recordsTotal" => 0, "recordsFiltered" => 0];
         // $getType = request()->get('f_type','');
@@ -59,10 +45,9 @@ class CategoryDatatableController extends AbstractDatatableController
             $category = $category->whereNull('category_id');
         }
         // $getType ? $category = $category->where('type', $getType) : false;
-        // $category = $category->limit(request()->length)->orderBy($sortColumn, $sortDir)->orderBy('name', 'asc')->orderBy('order', 'asc')->offset(request()->start)->get();
         $category = $category->orderBy($sortColumn, $sortDir)->orderBy('order', 'asc')->get();
 
-        $objResult = $this->eloquentCategoryToArrayList($category);
+        $objResult = ShopCategoryService::eloquentCategoryToArrayList($category);
         $result['recordsFiltered'] = count($objResult);
         $objResult = array_slice($objResult, (request()->start??0), (request()->length??10));
 
@@ -82,9 +67,7 @@ class CategoryDatatableController extends AbstractDatatableController
             $name .= '</div>';
             $dt = [
                 'id' => $item->id,
-                'parent' => $item->category->name??'---',
                 'name' => $name,
-                // 'products' => '<a class="label label-lg font-weight-bolder label-rounded label-primary pulse pulse-success" href="#">0<span class="pulse-ring"></span></a>',
                 'products' => '<a class="label label-lg font-weight-bolder label-rounded label-primary pulse pulse-success" href="' . route(config('crghome-shop.prefix') . '.shop.product.index', ['f_category' => $item->id]) . '">' . $item->products->count() . '<span class="pulse-ring"></span></a>',
                 'hide' => '<span class="label label-lg font-weight-bold label-light-' . ($item->hide?'error':'success') . ' label-inline">' . ($item->hide?'скрыто':'показ') . '</span>',
                 'order' => $item->order,

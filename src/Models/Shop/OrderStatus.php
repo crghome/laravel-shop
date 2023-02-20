@@ -19,6 +19,7 @@ class OrderStatus extends Model
         'code',
         'name',
         'images',
+        'css_class',
         'icon_class',
         'icon_base',
         'order',

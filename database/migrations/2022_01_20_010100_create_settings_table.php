@@ -18,17 +18,21 @@ return new class extends Migration
         if(!Schema::hasTable(config('crghome-shop.db.tables.settings', $this->table))){
             Schema::create(config('crghome-shop.db.tables.settings', $this->table), function (Blueprint $table) {
                 $table->bigIncrements('id');
+                // shop
                 $table->text('prevText')->nullable();
                 $table->longText('fullText')->nullable();
                 $table->json('images')->nullable();
                 $table->json('pictures')->nullable();
-                $table->string('suffixPrice')->nullable();
                 $table->json('meta')->nullable();
                 // config
                 $table->boolean('noAuthOfBuy')->default(true);
+                // config product
+                $table->string('suffixPrice')->nullable();
                 $table->boolean('countNullProductOfBuy')->default(true);
                 $table->boolean('showPrevText')->default(false);
                 $table->boolean('showSuffixPrice')->default(false);
+                // config status
+                $table->integer('defStatus')->nullable();
                 // statistics
                 $table->foreignId('created_user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');
                 $table->foreignId('updated_user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');

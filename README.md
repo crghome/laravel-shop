@@ -70,7 +70,9 @@ Run migrate in console:
 <pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\DatabaseSeeder"</pre>
 <p>- statuses</p>
 <pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\StatusSeeder"</pre>
-<p>- orders (before statuses data)</p>
+<p>- customer</p>
+<pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\ClientSeeder"</pre>
+<p>- orders (also create statuses and customers if empty)</p>
 <pre>php artisan db:seed --class="Database\Seeders\Crghome\Shop\OrdersSeeder"</pre>
 
 ### Routing
@@ -125,6 +127,7 @@ use Crghome\Shop\Services\ShopProductService;
     'product' => (object)['new' => ShopProductService::getNewProducts(), 'upd' => ShopProductService::getUpdateProducts()],
     'settings' => (object)['new' => ShopSettingsService::getNewSettings(), 'upd' => ShopSettingsService::getUpdateSettings()],
     'clients' => (object)['new' => ShopClientService::getNewClients(), 'upd' => ShopClientService::getUpdateClients()],
+    'orderStatuses' => (object)['new' => ShopOrderStatusService::getNewOrderStatuses(), 'upd' => ShopOrderStatusService::getUpdateOrderStatuses()],
 ],
 
 // section menu example
@@ -172,6 +175,15 @@ $arr[] = [
                     'isDir' => false,
                     'boxSuccess' => $counter->shop->clients->new > 0 ? '+' . $counter->shop->clients->new : '',
                     'boxInfo' => $counter->shop->clients->upd > 0 ? '`' . $counter->shop->clients->upd : '',
+                    'child' => [],
+                ],[
+                    'name' => 'Статусы заказов',
+                    'icon' => 'far fa-lightbulb',
+                    'href' => route(config('crghome-shop.prefix') . '.shop.order-status.index'),
+                    'isCurrent' => Str::startsWith((request()->route()->getName()??''), config('crghome-shop.prefix') . '.shop.order-status'),
+                    'isDir' => false,
+                    'boxSuccess' => $counter->shop->orderStatuses->new > 0 ? '+' . $counter->shop->orderStatuses->new : '',
+                    'boxInfo' => $counter->shop->orderStatuses->upd > 0 ? '`' . $counter->shop->orderStatuses->upd : '',
                     'child' => [],
                 ],[
                     'name' => 'Настройки',

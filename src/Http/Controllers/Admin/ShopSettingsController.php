@@ -3,6 +3,7 @@ namespace Crghome\Shop\Http\Controllers\Admin;
 
 use Crghome\Shop\Http\Controllers\Admin\Controller;
 use Crghome\Shop\Http\Requests\SettingsFormRequest;
+use Crghome\Shop\Models\Shop\OrderStatus;
 use Crghome\Shop\Models\Shop\Settings;
 use Crghome\Shop\Services\ShopSettingsService;
 use Illuminate\Support\Facades\Redirect;
@@ -45,8 +46,10 @@ class ShopSettingsController extends Controller
     protected function index()
     {
         $settings = Settings::firstOrCreate();
+        $status = OrderStatus::select('id', 'name')->get()->pluck('name', 'id')->toArray();
         $arrData = (object)array(
             'settings' => $settings,
+            'status' => $status,
             'route' => route(config('crghome-shop.prefix') . '.shop.settings.update', $settings),
             'method' => 'PATCH'
         );

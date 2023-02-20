@@ -11,6 +11,7 @@
                 <x-keen.page-card-tabs-content-layout tabId="tabIndex_global" :active="true">
                     <x-keen.forms.input-component layout="default.inline" classLayout="mb-0" attribute="id" type="hidden" value="{{ $arrData->settings?->id??'' }}"/>
                     <x-keen.forms.input-component layout="default.horizontal" label="Суфикс цены" attribute="suffixPrice" :required="false" type="text" value="{{ old('suffixPrice')??$arrData->settings?->suffixPrice??'' }}"/>
+                    <x-keen.forms.input-component layout="default.horizontal" label="Статус заказа по умолчанию" attribute="defStatus" :required="false" type="select2" :value="old('defStatus')??$arrData->settings?->defStatus??[]" :listsel="$arrData->status"/>
                 </x-keen.page-card-tabs-content-layout>
                 <x-keen.page-card-tabs-content-layout tabId="tabIndex_text" :active="false" :isFullWidth="true">
                     <x-keen.forms.input-component layout="default.inline" label="Предварительный текст" attribute="prevText" :required="false" type="ckeditor" value="{{ old('prevText')??$arrData->settings?->prevText??'' }}"/>
@@ -54,7 +55,7 @@
                 <x-keen.page-card-tabs-content-layout tabId="tabIndex_system" :active="false">
                     <x-keen.forms.input-component layout="default.horizontal" label="Покупка без авторизации" class="switch-success" disabled="disabled" attribute="noAuthOfBuy" type="switch" :value="[(old('noAuthOfBuy')??$arrData->settings?->noAuthOfBuy??1)]" :listsel="[1 => '']" />
                     <x-keen.forms.input-component layout="default.horizontal" label="Не учитывать наличие" class="switch-success" disabled="disabled" attribute="countNullProductOfBuy" type="switch" :value="[(old('countNullProductOfBuy')??$arrData->settings?->countNullProductOfBuy??1)]" :listsel="[1 => '']" />
-                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суфикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->settings?->showSuffixPrice??0)]" :listsel="[1 => '']" />
+                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суффикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->settings?->showSuffixPrice??0)]" :listsel="[1 => '']" />
                     <x-keen.forms.input-component layout="default.horizontal" label="Показывать предварительный текст в продукте" class="switch-success" attribute="showPrevText" type="switch" :value="[(old('showPrevText')??$arrData->settings?->showPrevText??0)]" :listsel="[1 => '']" />
                 </x-keen.page-card-tabs-content-layout>
             </x-keen.page-card-layout >

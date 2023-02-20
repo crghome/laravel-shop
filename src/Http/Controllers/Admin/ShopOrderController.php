@@ -51,30 +51,7 @@ class ShopOrderController extends Controller
      */
     public function index()
     {
-        // $order = [];
-        // $clients = Client::all();
-        // $productsAll = Product::all()->keyBy('id');
-        // for($i = 0; $i <= 5; $i++){
-        //     $client = $clients->random();
-        //     $products = [];
-        //     $cart = rand(3,8);
-        //     for($j = 1; $j <= $cart; $j++){
-        //         $k = rand(1,3); $c = rand(1,8);
-        //         $p = isset($productsAll[$k]) ? $productsAll[$k] : [];
-        //         !empty($p) ? $products[] = ['id' => $k, 'count' => $c, 'amount' => $p->price * $c] : false;
-        //     }
-        //     $order[] = [
-        //         'client_id' => $client->id,
-        //         'status_id' => 1,
-        //         'client_name' => $client->name,
-        //         'client_phone' => $client->phone,
-        //         'client_email' => $client->email,
-        //         'client_company' => $client->company,
-        //         'address' => $client->address,
-        //         'amount' => array_sum(array_column($products,'amount')),
-        //         'products' => $products,
-        //     ];
-        // }
+        // $order = Order::with(['client', 'status'])->get();
         // dd($order);
         $breadcrumbs = $this->_breadcrumbs;
         $configDataAjax = OrderDatatableController::getFields();
@@ -96,58 +73,58 @@ class ShopOrderController extends Controller
      *
      * @param  \Crghome\Shop\Models\Shop\Order  $order
      */
-    public function show(Order $order)
-    {
-        $arrData = (object)array(
-            'order' => $order,
-        );
-        // dd($arrData);
+    // public function show(Order $order)
+    // {
+    //     $arrData = (object)array(
+    //         'order' => $order,
+    //     );
+    //     // dd($arrData);
 
-        $title = $order->label;
-        $breadcrumbs = $this->_breadcrumbs;
-        $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Просмотр заказа магазина "' . $order->number . '"');
-        $pageBtnAction = [
-            (object)[
-                'type' => 'link',
-                'class' => 'btn-light-primary',
-                'icon' => 'ki ki-long-arrow-back icon-sm',
-                'text' => 'Назад',
-                'href' => $this->_listRoute,
-            ],
-            (object)[
-                'type' => 'link',
-                'class' => 'btn-primary',
-                'icon' => 'la la-edit',
-                'text' => 'Редактировать',
-                'href' => route(config('crghome-shop.prefix') . '.shop.order.edit', $order),
-            ],
-        ];
-        return view('crghome-shop::admin.order.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
-    }
+    //     $title = $order->label;
+    //     $breadcrumbs = $this->_breadcrumbs;
+    //     $breadcrumbs['index']['href'] = $this->_listRoute;
+    //     $breadcrumbs[] = array('text' => 'Просмотр заказа магазина "' . $order->number . '"');
+    //     $pageBtnAction = [
+    //         (object)[
+    //             'type' => 'link',
+    //             'class' => 'btn-light-primary',
+    //             'icon' => 'ki ki-long-arrow-back icon-sm',
+    //             'text' => 'Назад',
+    //             'href' => $this->_listRoute,
+    //         ],
+    //         (object)[
+    //             'type' => 'link',
+    //             'class' => 'btn-primary',
+    //             'icon' => 'la la-edit',
+    //             'text' => 'Редактировать',
+    //             'href' => route(config('crghome-shop.prefix') . '.shop.order.edit', $order),
+    //         ],
+    //     ];
+    //     return view('crghome-shop::admin.order.show', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $arrData = (object)array(
-            'products' => Product::select(['name', 'id'])->orderBy('name')->get()->pluck('name', 'id')->toArray(),
-            // 'config' => ShopSettingsService::getConfiguration(),
-            'route' => route(config('crghome-shop.prefix') . '.shop.order.store'),
-            'method' => 'POST'
-        );
-        //dd(\Auth::user()->hasRole('superadmin|admin|manager'));
+    // public function create()
+    // {
+    //     $arrData = (object)array(
+    //         'products' => Product::select(['name', 'id'])->orderBy('name')->get()->pluck('name', 'id')->toArray(),
+    //         // 'config' => ShopSettingsService::getConfiguration(),
+    //         'route' => route(config('crghome-shop.prefix') . '.shop.order.store'),
+    //         'method' => 'POST'
+    //     );
+    //     //dd(\Auth::user()->hasRole('superadmin|admin|manager'));
 
-        $title = $this->_title->create??config('crghome-shop.name');
-        $breadcrumbs = $this->_breadcrumbs;
-        $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Создание заказа');
-        $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::admin.order.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
-    }
+    //     $title = $this->_title->create??config('crghome-shop.name');
+    //     $breadcrumbs = $this->_breadcrumbs;
+    //     $breadcrumbs['index']['href'] = $this->_listRoute;
+    //     $breadcrumbs[] = array('text' => 'Создание заказа');
+    //     $pageBtnAction = $this->_pageBtnAction;
+    //     return view('crghome-shop::admin.order.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -155,12 +132,12 @@ class ShopOrderController extends Controller
      * @param  \Crghome\Shop\Http\Requests\OrderFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderFormRequest $request)
-    {
-        $data = $request->except(['id']);
-        $save = ShopOrderService::saveUpdateOrder($data);
-        return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
-    }
+    // public function store(OrderFormRequest $request)
+    // {
+    //     $data = $request->except(['id']);
+    //     $save = ShopOrderService::saveUpdateOrder($data);
+    //     return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -168,23 +145,23 @@ class ShopOrderController extends Controller
      * @param  \Crghome\Shop\Models\Shop\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
-    {
-        $arrData = (object)array(
-            'Order' => $order,
-            // 'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
-            // 'config' => ShopSettingsService::getConfiguration(),
-            'route' => route(config('crghome-shop.prefix') . '.shop.order.update', $order),
-            'method' => 'PATCH'
-        );
+    // public function edit(Order $order)
+    // {
+    //     $arrData = (object)array(
+    //         'Order' => $order,
+    //         // 'categories' => Category::orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
+    //         // 'config' => ShopSettingsService::getConfiguration(),
+    //         'route' => route(config('crghome-shop.prefix') . '.shop.order.update', $order),
+    //         'method' => 'PATCH'
+    //     );
 
-        $title = ($this->_title->update??config('crghome-shop.name')) . ' "' . $order->name . '"';
-        $breadcrumbs = $this->_breadcrumbs;
-        $breadcrumbs['index']['href'] = $this->_listRoute;
-        $breadcrumbs[] = array('text' => 'Редактирование заказа "' . $order->name . '"');
-        $pageBtnAction = $this->_pageBtnAction;
-        return view('crghome-shop::admin.order.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
-    }
+    //     $title = ($this->_title->update??config('crghome-shop.name')) . ' "' . $order->name . '"';
+    //     $breadcrumbs = $this->_breadcrumbs;
+    //     $breadcrumbs['index']['href'] = $this->_listRoute;
+    //     $breadcrumbs[] = array('text' => 'Редактирование заказа "' . $order->name . '"');
+    //     $pageBtnAction = $this->_pageBtnAction;
+    //     return view('crghome-shop::admin.order.createUpdate', compact('title', 'arrData', 'pageBtnAction', 'breadcrumbs'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -193,12 +170,12 @@ class ShopOrderController extends Controller
      * @param  \Crghome\Shop\Models\Shop\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderFormRequest $request, Order $order)
-    {
-        $data = $request->except(['id']);
-        $save = ShopOrderService::saveUpdateOrder($data, $order);
-        return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
-    }
+    // public function update(OrderFormRequest $request, Order $order)
+    // {
+    //     $data = $request->except(['id']);
+    //     $save = ShopOrderService::saveUpdateOrder($data, $order);
+    //     return $save ? Redirect::to($this->_backRoute) : Redirect::back()->withInput($request->all());
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -206,9 +183,9 @@ class ShopOrderController extends Controller
      * @param  \Crghome\Shop\Models\Shop\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
-    {
-        // $res = ShopOrderService::deleteOrder($order);
-        // return Redirect::to($this->_backRoute);
-    }
+    // public function destroy(Order $order)
+    // {
+    //     // $res = ShopOrderService::deleteOrder($order);
+    //     // return Redirect::to($this->_backRoute);
+    // }
 }

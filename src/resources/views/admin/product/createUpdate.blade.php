@@ -76,7 +76,7 @@
                 </x-keen.page-card-tabs-content-layout>
                 <x-keen.page-card-tabs-content-layout tabId="tabIndex_system" :active="false">
                     <x-keen.forms.input-component layout="default.horizontal" label="Скрыть продукт" class="switch-danger" attribute="hide" type="switch" :value="[(old('hide')??$arrData->product?->hide??0)]" :listsel="[1 => '']" />
-                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суфикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->product?->showSuffixPrice??$arrData->config?->showSuffixPrice??0)]" :listsel="[1 => '']" />
+                    <x-keen.forms.input-component layout="default.horizontal" label="Показывать суффикс цены" class="switch-success" attribute="showSuffixPrice" type="switch" :value="[(old('showSuffixPrice')??$arrData->product?->showSuffixPrice??$arrData->config?->showSuffixPrice??0)]" :listsel="[1 => '']" />
                     <x-keen.forms.input-component layout="default.horizontal" label="Показывать предварительный текст в продукте" class="switch-success" attribute="showPrevText" type="switch" :value="[(old('showPrevText')??$arrData->product?->showPrevText??$arrData->config?->showPrevText??0)]" :listsel="[1 => '']" />
                 </x-keen.page-card-tabs-content-layout>
             </x-keen.page-card-layout >

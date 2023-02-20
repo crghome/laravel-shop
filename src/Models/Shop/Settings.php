@@ -14,16 +14,22 @@ class Settings extends Model
     protected $table = 'crgshop_settings';
 
     protected $fillable = [
+        // shop
         'prevText',
         'fullText',
         'images',
         'pictures',
-        'suffixPrice',
         'meta',
+        // config
         // 'noAuthOfBuy',
+        // config prod
+        'suffixPrice',
         'countNullProductOfBuy',
         'showPrevText',
         'showSuffixPrice',
+        // config status
+        'defStatus',
+        // stat
         // 'created_user_id',
         'updated_user_id',
     ];

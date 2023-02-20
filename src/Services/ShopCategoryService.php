@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use Exception;
 use Crghome\Shop\Models\ImageModel;
 use Crghome\Shop\Models\Shop\Category;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 class ShopCategoryService{
 
@@ -62,6 +64,27 @@ class ShopCategoryService{
         return $result;
     }
     
+    /**
+     * get Array Eloquent
+     * @param \Illuminate\Database\Eloquent\Collection $categories
+     * @param Int $level
+     * @return Array
+     */
+    public static function eloquentCategoryToArrayList(Collection $categories, Int $level = 0){
+        $response = [];
+        foreach (($categories??[]) as $k => $item) {
+            if(!in_array($item->id, Arr::pluck($response, 'id'))){
+                $item->level = $level;
+                $item->last = ($k + 1 == count($categories));
+                $response[] = $item;
+                !empty($item->categoriesAllChildren) 
+                    ? $response = array_merge($response, self::eloquentCategoryToArrayList($item->categoriesAllChildren, ($level + 1))) 
+                    : false;
+            }
+        }
+        return $response;
+    }
+
     /**
      * Save/Insert resource from storage.
      *

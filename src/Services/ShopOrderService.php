@@ -71,6 +71,7 @@ class ShopOrderService{
             if(Product::whereIn('id', $idsProd)->count() != count($data['products'])){ throw new \Exception('Некоторые продукты не доступны для покупки'); }
             // saves
             DB::beginTransaction();
+            $config = ShopSettingsService::getConfiguration();
             $data['client_phone'] = preg_replace('/[\+\-\ \(\)]/', '', $data['client_phone']);
             $data['client_email'] = trim($data['client_email']);
             // $data['subs_actions'] = isset($data['subs_actions']) ? $data['subs_actions'] : false;
@@ -84,6 +85,7 @@ class ShopOrderService{
             $data['products'] = $products;
             if(empty($data['products'])){ throw new \Exception('Не смогли разобрать товары'); }
             empty($data['number']) ? self::getNumberOrder(($data['number_prefix']??''), substr($data['client_phone'], (strlen($data['client_phone']) - 4), strlen($data['client_phone']))) : false;
+            empty($data['status_id']) ? $data['status_id'] = ($config?->defStatus??null) : false;
             // throw new \Exception('PRE SAVE');
             // dd($data);
             $order->fill($data);

@@ -28,7 +28,7 @@ return new class extends Migration
                 $table->text('address')->nullable();
                 $table->float('amount', 13, 4);
                 // statistics
-                $table->foreignId('status_id')->constrained(config('crghome-shop.db.tables.statuses'))->onUpdate('cascade')->onDelete('cascade');
+                $table->foreignId('status_id')->nullable()->constrained(config('crghome-shop.db.tables.statuses'))->onUpdate('cascade')->onDelete('cascade');
                 $table->timestamps();
             });
         }
