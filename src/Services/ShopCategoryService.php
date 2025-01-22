@@ -86,6 +86,46 @@ class ShopCategoryService{
     }
 
     /**
+     * @param Int $idCat
+     * @param Array|Int $idsSelectInChild
+     * @return Object
+     */
+    public static function isSetChildCategory(Int $idCat, Array|int $idsSelectInChild){
+        is_int($idsSelectInChild) ? $idsSelectInChild = [$idsSelectInChild] : false;
+        $res = (object)['status' => false, 'name' => ''];
+        $categories = Category::select('id', 'name', 'category_id')->where('category_id', $idCat)->get();
+        foreach(($categories??[]) AS $it){
+            if(false === $res->status){
+                if(in_array($it->id, $idsSelectInChild)){
+                    $res->status = true;
+                    $res->name = $it->name;
+                    break;
+                } else {
+                    $res = self::isSetChildCategory($it->id, $idsSelectInChild);
+                }
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * @param Int $idCat
+     * @param Bool $isArrList
+     * @param String $prependText
+     * @return Category
+     */
+    public static function getCategoriesWithoutRecycle(Int $idCat, Bool $isArrList = false, String $prependText = ''){
+        $categories = Category::select('id', 'category_id', 'name')->where('id', '!=', $idCat)->where(function($q)use($idCat){ $q->where('category_id', '!=', $idCat)->orWhereNull('category_id'); })->orderBy('name')->get();
+        foreach(($categories??[]) AS $k => $it){
+            $isSetParent = self::isSetChildCategory($idCat, $it->id);
+            if($isSetParent->status){ unset($categories[$k]); }
+        }
+        if($isArrList && !empty($prependText)) $categories = $categories->pluck('name', 'id')->prepend($prependText, null)->toArray();
+        if($isArrList && empty($prependText)) $categories = $categories->pluck('name', 'id')->toArray();
+        return $categories;
+    }
+
+    /**
      * Save/Insert resource from storage.
      *
      * @param  \Crghome\Shop\Models\Shop\Category  $category
@@ -102,6 +142,10 @@ class ShopCategoryService{
         try {
             // validate
             if(empty($data['name'])){ throw new \Exception('Название категории не может быть пустым'); }
+            if(!empty($category->id??0) && !empty($data['category_id'])){
+                $isSetIn = self::isSetChildCategory($category->id, $data['category_id']);
+                if($isSetIn?->status??false){ throw new \Exception('Категория "' . ($isSetIn?->name??'-') . '" в родительских категориях является дочерней'); }
+            }
             // saves
             DB::beginTransaction();
             $data['hide'] = isset($data['hide']) ? $data['hide'] : false;

@@ -72,6 +72,7 @@ class ShopProductService{
             }
             empty($data['pictures']) ? $data['pictures'] = null : false;
             empty($data['price']) ? $data['price'] = 0 : false;
+            empty($data['count']) ? $data['count'] = 0 : false;
             $product->fill($data);
             $product->save();
             // many to many updates

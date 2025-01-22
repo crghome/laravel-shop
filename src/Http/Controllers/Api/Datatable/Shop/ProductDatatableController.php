@@ -16,14 +16,14 @@ class ProductDatatableController extends AbstractDatatableController
             'getRoute' => route(config('crghome-shop.prefix') . '.resource.datatable.shop.product') . '?' . http_build_query($_GET, '', '&'),
             'columns' => [
                 ['name' => 'id', 'label' => '#'],
-                ['name' => 'category', 'label' => 'Категории', 'orderable' => false],
                 ['name' => 'name', 'label' => 'Название'],
+                ['name' => 'category', 'label' => 'Категории', 'orderable' => false],
                 ['name' => 'price', 'label' => 'Цена'],
                 ['name' => 'hide', 'label' => 'Показ'],
                 ['name' => 'order', 'label' => 'Сортировка'],
                 ['name' => 'dates', 'label' => 'Даты', 'orderable' => false],
             ],
-            // 'order' => '[[4, "asc"]]'
+            'order' => '[[0, "desc"]]'
         ];
     }
 
@@ -61,10 +61,9 @@ class ProductDatatableController extends AbstractDatatableController
             );
             $dt = [
                 'id' => $item->id,
-                'category' => implode('<br>', Arr::sort(($item->categories?->pluck('name')?->toArray()??[]))),
-                'name' => $item->name . '<br>' . $item->alias,
+                'name' => '<strong>' . $item->name . '</strong><br><small>' . $item->alias . '</small>',
+                'category' => '<div class="mb-2" style="font-size: 0.8rem;">' . implode('</div><div class="mb-2" style="font-size: 0.8rem;">', Arr::sort(($item->categories?->pluck('name')?->toArray()??['---']))) . '</div>',
                 'price' => $item->price . '<br><small>' . $item->price_old . '</small>',
-                // 'products' => '<a class="label label-lg font-weight-bolder label-rounded label-primary pulse pulse-success" href="' . route(config('crghome-shop.prefix') . '.shop.product.index', ['f_product' => $item->id]) . '">' . $item->articles->count() . '<span class="pulse-ring"></span></a>',
                 'hide' => '<span class="label label-lg font-weight-bold label-light-' . ($item->hide?'error':'success') . ' label-inline">' . ($item->hide?'скрыто':'показ') . '</span>',
                 'order' => $item->order,
                 'dates' => date('d.m.Y H:i', strtotime($item->created_at)) . '<br>' . (!empty($item->updated_at) ? date('d.m.Y H:i', strtotime($item->updated_at)) : '---'),

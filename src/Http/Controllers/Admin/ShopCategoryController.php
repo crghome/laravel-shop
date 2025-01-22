@@ -148,7 +148,7 @@ class ShopCategoryController extends Controller
     {
         $arrData = (object)array(
             'category' => $category,
-            'categories' => Category::where('id', '!=', $category->id)->orderBy('name')->get()->pluck('name', 'id')->prepend('-- Корневая директория --', null)->toArray(),
+            'categories' => ShopCategoryService::getCategoriesWithoutRecycle($category->id, true, '-- Корневая директория --'),
             'route' => route(config('crghome-shop.prefix') . '.shop.category.update', $category),
             'method' => 'PATCH'
         );
